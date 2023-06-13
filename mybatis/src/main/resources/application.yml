@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:identifier.sqlite
+    driver-class-name: org.sqlite.JDBC
+
+mybatis:
+  mapper-locations: "classpath:mybatis/mappers/*.xml"
+  type-aliases-package: "com.lahee.mybatis.model"
+  configuration:
+    map-underscore-to-camel-case: true # snake_case - camelCase, PascoCase
