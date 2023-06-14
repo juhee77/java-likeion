@@ -24,6 +24,16 @@ public class StudentApiController {
         return studentService.createStudent(new StudentRequestDto("juhee", 25, "010-1234-5678", "bb@naver.com"));
     }
 
+    @PostMapping("/update/{id}")
+    public StudentResponseDto update(@PathVariable("id") Long id,@RequestBody StudentRequestDto studentRequestDto) {
+        return studentService.updateStudent(id,studentRequestDto);
+    }
+
+    @GetMapping("/update/{id}")
+    public StudentResponseDto update(@PathVariable("id") Long id) {
+        return studentService.updateStudent(id, new StudentRequestDto("바뀜~!", 123, "010-0987-4321", "modify@naver.com"));
+    }
+
     @GetMapping("/read/{id}")
     public StudentResponseDto readOne(@PathVariable("id") Long id) {
         return studentService.readStudent(id);
