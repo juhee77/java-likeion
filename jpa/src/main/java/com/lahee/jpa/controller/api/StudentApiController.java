@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class StudentApiController {
     private final StudentService studentService;
 
@@ -25,8 +26,8 @@ public class StudentApiController {
     }
 
     @PostMapping("/update/{id}")
-    public StudentResponseDto update(@PathVariable("id") Long id,@RequestBody StudentRequestDto studentRequestDto) {
-        return studentService.updateStudent(id,studentRequestDto);
+    public StudentResponseDto update(@PathVariable("id") Long id, @RequestBody StudentRequestDto studentRequestDto) {
+        return studentService.updateStudent(id, studentRequestDto);
     }
 
     @GetMapping("/update/{id}")
@@ -52,6 +53,28 @@ public class StudentApiController {
     @GetMapping("/read-all")
     public ResponseEntity<List<StudentResponseDto>> readAll() {
         List<StudentResponseDto> studentResponseDtos = studentService.readStudentAll();
+        return ResponseEntity.ok(studentResponseDtos);
+    }
+
+    @GetMapping("/read-by-age")
+    public ResponseEntity<List<StudentResponseDto>> readByAge() {
+        List<StudentResponseDto> studentResponseDtos = studentService.readStudentByAge().subList(0, 5);
+        return ResponseEntity.ok(studentResponseDtos);
+    }
+
+    @GetMapping("/read-by-age-desc")
+    public ResponseEntity<List<StudentResponseDto>> readByAgeDesc() {
+        List<StudentResponseDto> studentResponseDtos = studentService.readStudentByAgeDesc().subList(0,5);
+        return ResponseEntity.ok(studentResponseDtos);
+    }
+    @GetMapping("/read-by-age-under/{age}")
+    public ResponseEntity<List<StudentResponseDto>> readByAgeUnder(@PathVariable("age") int age) {
+        List<StudentResponseDto> studentResponseDtos = studentService.readStudentByUnderAge(age).subList(0,5);
+        return ResponseEntity.ok(studentResponseDtos);
+    }
+    @GetMapping("/read-phone/{regx:.+}")
+    public ResponseEntity<List<StudentResponseDto>> readPhone(@PathVariable("regx")String regx) {
+        List<StudentResponseDto> studentResponseDtos = studentService.readStudentByPhoneStatingWith(regx).subList(0,5);
         return ResponseEntity.ok(studentResponseDtos);
     }
 }

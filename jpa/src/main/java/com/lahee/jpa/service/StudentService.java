@@ -24,7 +24,27 @@ public class StudentService {
     }
 
     public List<StudentResponseDto> readStudentAll() {
-        return studentRepository.findAll()
+        return convertToResponseDto(studentRepository.findAll());
+    }
+
+    public List<StudentResponseDto> readStudentByAgeDesc() {
+        return convertToResponseDto(studentRepository.findAllByOrderByAgeDesc());
+    }
+
+    public List<StudentResponseDto> readStudentByAge() {
+        return convertToResponseDto(studentRepository.findAllByOrderByAge());
+    }
+
+    public List<StudentResponseDto> readStudentByUnderAge(int age) {
+        return convertToResponseDto(studentRepository.findAllByAgeLessThan(age));
+    }
+
+    public List<StudentResponseDto> readStudentByPhoneStatingWith(String regx) {
+        return convertToResponseDto(studentRepository.findAllByPhoneStartingWith(regx));
+    }
+
+    private static List<StudentResponseDto> convertToResponseDto(List<StudentEntity> allByOrderByAgeDesc) {
+        return allByOrderByAgeDesc
                 .stream()
                 .map(s -> new StudentResponseDto(s.getId(), s.getName(), s.getAge(), s.getPhone(), s.getEmail()))
                 .collect(Collectors.toList());

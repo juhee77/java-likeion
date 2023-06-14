@@ -12,6 +12,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="students")
 public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
