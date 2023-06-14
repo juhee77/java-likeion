@@ -1,9 +1,11 @@
 package com.lahee.jpa.domain.dto;
 
 import com.lahee.jpa.domain.StudentEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class StudentRequestDto {
     private String name;
     private Integer age;
