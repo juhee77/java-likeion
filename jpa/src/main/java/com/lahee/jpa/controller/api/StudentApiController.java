@@ -5,10 +5,7 @@ import com.lahee.jpa.domain.dto.StudentResponseDto;
 import com.lahee.jpa.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +22,11 @@ public class StudentApiController {
     @GetMapping("/create")
     public StudentResponseDto create() {
         return studentService.createStudent(new StudentRequestDto("juhee", 25, "010-1234-5678", "bb@naver.com"));
+    }
+
+    @GetMapping("/read/{id}")
+    public StudentResponseDto readOne(@PathVariable("id") Long id) {
+        return studentService.readStudent(id);
     }
 
     @GetMapping("/read-all")

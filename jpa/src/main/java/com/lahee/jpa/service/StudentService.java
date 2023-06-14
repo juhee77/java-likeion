@@ -27,4 +27,8 @@ public class StudentService {
                 .map(s -> new StudentResponseDto(s.getId(), s.getName(), s.getAge(), s.getPhone(), s.getEmail()))
                 .collect(Collectors.toList());
     }
+
+    public StudentResponseDto readStudent(Long id) {
+        return studentRepository.findById(id).orElseThrow(() -> new RuntimeException("없는 회원 번호 입니다.")).toResponseDto();
+    }
 }
