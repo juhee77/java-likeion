@@ -34,6 +34,16 @@ public class StudentApiController {
         return studentService.updateStudent(id, new StudentRequestDto("바뀜~!", 123, "010-0987-4321", "modify@naver.com"));
     }
 
+    @PostMapping("/delete/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        studentService.deleteStudent(id);
+    }
+
+    @GetMapping("/delete/{id}")
+    public void deleteTest(@PathVariable("id") Long id) {
+        studentService.deleteStudent(id);
+    }
+
     @GetMapping("/read/{id}")
     public StudentResponseDto readOne(@PathVariable("id") Long id) {
         return studentService.readStudent(id);

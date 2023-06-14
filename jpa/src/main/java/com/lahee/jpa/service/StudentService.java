@@ -1,5 +1,6 @@
 package com.lahee.jpa.service;
 
+import com.lahee.jpa.domain.StudentEntity;
 import com.lahee.jpa.domain.dto.StudentRequestDto;
 import com.lahee.jpa.domain.dto.StudentResponseDto;
 import com.lahee.jpa.repository.StudentRepository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,5 +40,15 @@ public class StudentService {
                 .orElseThrow(() -> new RuntimeException("없는 회원 번호 입니다."))
                 .update(studentRequestDto)
                 .toResponseDto();
+    }
+
+    @Transactional
+    public void deleteStudent(Long id) {
+        Optional<StudentEntity> find = studentRepository.findById(id);
+        if (find.isEmpty()) {
+            throw new RuntimeException("없는 ID입니다.");
+        }
+        //delete(find.get()))
+        studentRepository.deleteById(id);
     }
 }
