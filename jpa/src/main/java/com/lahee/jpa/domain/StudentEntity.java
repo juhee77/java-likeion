@@ -1,7 +1,7 @@
 package com.lahee.jpa.domain;
 
-import com.lahee.jpa.domain.dto.StudentRequestDto;
-import com.lahee.jpa.domain.dto.StudentResponseDto;
+import com.lahee.jpa.dto.StudentRequestDto;
+import com.lahee.jpa.dto.StudentResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 

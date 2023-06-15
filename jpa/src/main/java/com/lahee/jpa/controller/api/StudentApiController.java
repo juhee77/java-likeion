@@ -1,7 +1,7 @@
 package com.lahee.jpa.controller.api;
 
-import com.lahee.jpa.domain.dto.StudentRequestDto;
-import com.lahee.jpa.domain.dto.StudentResponseDto;
+import com.lahee.jpa.dto.StudentRequestDto;
+import com.lahee.jpa.dto.StudentResponseDto;
 import com.lahee.jpa.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

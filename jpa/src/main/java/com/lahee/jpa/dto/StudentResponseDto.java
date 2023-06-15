@@ -1,4 +1,4 @@
-package com.lahee.jpa.domain.dto;
+package com.lahee.jpa.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
