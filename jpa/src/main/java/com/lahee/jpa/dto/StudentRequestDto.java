@@ -1,4 +1,4 @@
-package com.lahee.jpa.domain.dto;
+package com.lahee.jpa.dto;
 
 import com.lahee.jpa.domain.StudentEntity;
 import lombok.AllArgsConstructor;

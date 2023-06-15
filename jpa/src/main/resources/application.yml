@@ -7,3 +7,13 @@ spring:
       ddl-auto: create
     show-sql: true
     database-platform: org.hibernate.community.dialect.SQLiteDialect
+    defer-datasource-initialization: true # 데이터 베이스 초기화 시점을 지연시킨다.
+  sql:
+    init :
+      mode: always
+#      schema-locations: classpath:scheme.sql
+#      data-locations: classpath:data.sql
+
+logging:
+  level:
+    web: debug

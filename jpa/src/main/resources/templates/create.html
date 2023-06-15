@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Create</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        @font-face {
+            font-family: 'OTWelcomeRA';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            font-family: 'OTWelcomeRA', fantasy;
+        }
+
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Create Student</h1>
+    <form action="/students/create" method="post">
+        <div class="form-group">
+            <label for="name-input">Name:</label>
+            <input id="name-input" name="name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="age-input">Age:</label>
+            <input id="age-input" name="age" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="phone-input">Phone:</label>
+            <input id="phone-input" name="phone" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="email-input">Email:</label>
+            <input id="email-input" name="email" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <a href="/students" class="btn btn-secondary mt-3">Back</a>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

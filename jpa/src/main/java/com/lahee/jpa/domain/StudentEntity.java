@@ -1,7 +1,7 @@
 package com.lahee.jpa.domain;
 
-import com.lahee.jpa.domain.dto.StudentRequestDto;
-import com.lahee.jpa.domain.dto.StudentResponseDto;
+import com.lahee.jpa.dto.StudentRequestDto;
+import com.lahee.jpa.dto.StudentResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,11 +17,9 @@ public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
 //    @Column(name = "username", nullable = false, unique = true)
     private String name;
-
-
     private Integer age;
     private String phone;
     private String email;
