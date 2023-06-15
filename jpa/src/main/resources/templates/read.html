@@ -3,14 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Student Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        @font-face {
+            font-family: 'OTWelcomeRA';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            font-family: 'OTWelcomeRA', fantasy;
+        }
+
+        body {
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        .btn-group {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-<h1>[[${student.id}]]. [[${student.name}]]</h1>
-<p>나이: [[${student.age}]]</p>
-<p>전화번호: [[${student.phone}]]</p>
-<p>이메일: [[${student.email}]]</p>
-<a href="/students">Back</a>
-<a th:href="@{/students/{id}/update-view (id=${student.id})}">Update</a>
-<a th:href="@{/students/{id}/delete-view (id=${student.id})}">Delete</a>
+<div class="container">
+    <h1 class="display-4">[[${student.id}]]. [[${student.name}]]</h1>
+    <p>나이: [[${student.age}]]</p>
+    <p>전화번호: [[${student.phone}]]</p>
+    <p>이메일: [[${student.email}]]</p>
+    <div class="btn-group">
+        <a href="/students" class="btn btn-secondary">Back</a>
+        <a th:href="@{/students/{id}/update-view (id=${student.id})}" class="btn btn-primary">Update</a>
+        <a th:href="@{/students/{id}/delete-view (id=${student.id})}" class="btn btn-danger">Delete</a>
+    </div>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 </html>
