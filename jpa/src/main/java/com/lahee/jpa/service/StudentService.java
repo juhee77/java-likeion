@@ -46,7 +46,7 @@ public class StudentService {
     private static List<StudentResponseDto> convertToResponseDto(List<StudentEntity> allByOrderByAgeDesc) {
         return allByOrderByAgeDesc
                 .stream()
-                .map(s -> new StudentResponseDto(s.getId(), s.getName(), s.getAge(), s.getPhone(), s.getEmail()))
+                .map(StudentResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
 

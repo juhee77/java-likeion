@@ -52,8 +52,7 @@ public class StudentApiController {
 
     @GetMapping("/read-all")
     public ResponseEntity<List<StudentResponseDto>> readAll() {
-        List<StudentResponseDto> studentResponseDtos = studentService.readStudentAll();
-        return ResponseEntity.ok(studentResponseDtos);
+        return ResponseEntity.ok(studentService.readStudentAll());
     }
 
     @GetMapping("/read-by-age")
