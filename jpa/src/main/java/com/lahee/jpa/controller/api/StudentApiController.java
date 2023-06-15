@@ -2,7 +2,7 @@ package com.lahee.jpa.controller.api;
 
 import com.lahee.jpa.dto.StudentRequestDto;
 import com.lahee.jpa.dto.StudentResponseDto;
-import com.lahee.jpa.service.StudentService;
+import com.lahee.jpa.service.BeroreStudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class StudentApiController {
-    private final StudentService studentService;
+    private final BeroreStudentService studentService;
 
     @PostMapping("/create")
     public StudentResponseDto create(@RequestBody StudentRequestDto studentRequestDto) {
