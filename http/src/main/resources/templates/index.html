@@ -6,6 +6,8 @@
 
 </head>
 <body>
+<span th:if="${existingValue}">기존 값: <span th:text="${existingValue}"></span></span>
+<span th:unless="${existingValue}">기존 값이 없습니다.</span>
 
 </body>
 </html>
