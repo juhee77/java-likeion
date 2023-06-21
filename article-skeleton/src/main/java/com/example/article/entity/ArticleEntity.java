@@ -1,5 +1,6 @@
 package com.example.article.entity;
 
+import com.example.article.dto.ArticleDto;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,4 +14,13 @@ public class ArticleEntity {
     private String writer;
     private String title;
     private String content;
+
+
+    public static ArticleEntity fromDto(ArticleDto dto) {
+        ArticleEntity entity = new ArticleEntity();
+        entity.setWriter(dto.getWriter());
+        entity.setTitle(dto.getTitle());
+        entity.setContent(dto.getContent());
+        return entity;
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.article;
 
 import com.example.article.dto.ArticleDto;
+import com.example.article.entity.ArticleEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,8 @@ public class ArticleService {
     private final ArticleRepository repository;
 
     public ArticleDto createArticle(ArticleDto dto) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
+        return ArticleDto.fromEntity(repository.save(ArticleEntity.fromDto(dto)));
+
     }
 
     public ArticleDto readArticle(Long id) {
