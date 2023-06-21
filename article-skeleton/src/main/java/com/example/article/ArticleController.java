@@ -3,10 +3,10 @@ package com.example.article;
 import com.example.article.dto.ArticleDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Slf4j
@@ -23,14 +23,40 @@ public class ArticleController {
     }
 
     // GET /articles
-
+    @GetMapping
+    public List<ArticleDto> getArticles() {
+        return service.readArticleAll();
+    }
 
     // GET /articles/{id}
+    @GetMapping("/{id}")
+    public ArticleDto getArticleOptional(@PathVariable("id") Long id) {
+        return service.readArticleOptional(id);
+    }
+
+    @GetMapping("/my/{id}")
+    public ResponseEntity<ArticleDto> getArticle(@PathVariable("id") Long id) {
+        ResponseEntity response;
+        try {
+            ArticleDto articleDto = service.readArticle(id);
+            response = ResponseEntity.ok(articleDto);
+        } catch (RuntimeException e1) {
+            response = ResponseEntity.notFound().header("x-like", "none").build();
+        }
+        return response;
+    }
 
 
     // PUT /articles/{id}
+    @PutMapping("/{id}")
+    public ArticleDto updateArticle(@PathVariable("id") Long id, @RequestBody ArticleDto dto) {
+        return service.updateArticle(id, dto);
+    }
 
 
     // DELETE /articles/{id}
-
+    @DeleteMapping("/{id}")
+    public void deleteArticle(@PathVariable("id") Long id) {
+        service.deleteArticle(id);
+    }
 }

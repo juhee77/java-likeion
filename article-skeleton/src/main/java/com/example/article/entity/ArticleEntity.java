@@ -23,4 +23,10 @@ public class ArticleEntity {
         entity.setContent(dto.getContent());
         return entity;
     }
+
+    public void update(ArticleDto dto) {
+        this.writer = dto.getWriter();
+        this.content = dto.getContent();
+        this.title = dto.getTitle();
+    }
 }
