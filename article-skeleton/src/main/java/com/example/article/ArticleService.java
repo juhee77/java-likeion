@@ -54,4 +54,12 @@ public class ArticleService {
         //var.isPresent() -> Optional 객체의 값이 존재하는지 여부를 확인하는 메서드입니다. Optional은 값의 존재 여부를 나타내는 컨테이너 객체입니다. isPresent 메서드는 Optional 객체에 값이 있는지 확인하고, 결과는 true 또는 false로 반환됩니다. 이 메서드는 단순히 Optional 객체의 내부 값을 확인하므로, 데이터베이스 쿼리 등의 외부 작업에는 직접적인 영향을 주지 않습니다.
         repository.delete(repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
+
+    public List<ArticleDto> readArticlesPaged() {
+        return repository.findTop20ByOrderByIdDesc().stream().map(ArticleDto::fromEntity).toList();
+    }
+
+    public List<ArticleDto> readArticleUnderIdPaged(Long id) {
+        return repository.findTop20ByIdLessThanOrderByIdDesc(id).stream().map(ArticleDto::fromEntity).toList();
+    }
 }

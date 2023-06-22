@@ -33,6 +33,16 @@ public class ArticleController {
     public ArticleDto getArticleOptional(@PathVariable("id") Long id) {
         return service.readArticleOptional(id);
     }
+    // GET /articles/page-test
+    @GetMapping("/page-test")
+    public List<ArticleDto> getArticlePaged() {
+        return service.readArticlesPaged();
+    }
+    // GET /articles/page-test/{id}
+    @GetMapping("/page-test/{id}")
+    public List<ArticleDto> getArticleUnderIdPaged(@PathVariable("id") Long id) {
+        return service.readArticleUnderIdPaged(id);
+    }
 
     @GetMapping("/my/{id}")
     public ResponseEntity<ArticleDto> getArticle(@PathVariable("id") Long id) {
