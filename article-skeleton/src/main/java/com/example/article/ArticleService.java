@@ -3,6 +3,9 @@ package com.example.article;
 import com.example.article.dto.ArticleDto;
 import com.example.article.entity.ArticleEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,11 +59,23 @@ public class ArticleService {
         repository.delete(repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
+//     아래 방식으로 리팩토링
     public List<ArticleDto> readArticlesPaged() {
         return repository.findTop20ByOrderByIdDesc().stream().map(ArticleDto::fromEntity).toList();
     }
 
     public List<ArticleDto> readArticleUnderIdPaged(Long id) {
         return repository.findTop20ByIdLessThanOrderByIdDesc(id).stream().map(ArticleDto::fromEntity).toList();
+    }
+
+//    public List<ArticleDto> readArticlesPaged() {
+//        Pageable pageable = PageRequest.of(0, 20);
+//        return repository.findAll(pageable).stream().map(ArticleDto::fromEntity).collect(Collectors.toList());
+//    }
+
+    public Page<ArticleEntity> readArticlesPageable() {
+        Pageable pageable = PageRequest.of(0, 20);
+        Page<ArticleEntity> articleEntities = repository.findAll(pageable);
+        return articleEntities;
     }
 }

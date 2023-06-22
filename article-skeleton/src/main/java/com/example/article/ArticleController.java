@@ -3,6 +3,7 @@ package com.example.article;
 import com.example.article.dto.ArticleDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,11 @@ public class ArticleController {
     @GetMapping("/page-test/{id}")
     public List<ArticleDto> getArticleUnderIdPaged(@PathVariable("id") Long id) {
         return service.readArticleUnderIdPaged(id);
+    }
+    // GET /articles/page-test-pageable
+    @GetMapping("/page-test-pageable")
+    public Page getArticleUnderIdPagable() {
+        return service.readArticlesPageable();
     }
 
     @GetMapping("/my/{id}")
