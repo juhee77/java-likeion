@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +59,7 @@ public class ArticleService {
         repository.delete(repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
-//     아래 방식으로 리팩토링
+    //     아래 방식으로 리팩토링
     public List<ArticleDto> readArticlesPaged() {
         return repository.findTop20ByOrderByIdDesc().stream().map(ArticleDto::fromEntity).toList();
     }
@@ -77,5 +77,25 @@ public class ArticleService {
         Pageable pageable = PageRequest.of(0, 20);
         Page<ArticleEntity> articleEntities = repository.findAll(pageable);
         return articleEntities;
+    }
+
+    public Page<ArticleDto> readArticlePaged(Integer page, Integer limit) {
+        // PagingAndSortingRepository 메소드에 전달하는 용도
+        // 조회하고 싶은 페이지의 정보를 담는 객체
+        // 20개씩 데이터를 나눌때 0번 페이지를 달라고 요청하는 Pageable
+        Pageable pageable = PageRequest.of(page, limit, Sort.by("id").descending());
+        Page<ArticleEntity> articleEntityPage = repository.findAll(pageable);
+
+        // map: 전달받은 함수를 각 원소에 인자로 전달한 결과를 다시 모아서 Stream으로
+        // Page.map: 전달받은 함수를 각 원소에 인자로 전달한 결과를 다시 모아서 Page로
+        Page<ArticleDto> articleDtoPage = articleEntityPage.map(ArticleDto::fromEntity);
+        return articleDtoPage;
+    }
+
+
+    public Page<ArticleDto> findAllByTitleContains(String query, Integer page) {
+        return repository
+                .findAllByTitleContains(query, PageRequest.of(page, 20, Sort.by("id").descending()))
+                .map(ArticleDto::fromEntity);
     }
 }
