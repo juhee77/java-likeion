@@ -3,10 +3,7 @@ package com.example.article;
 import com.example.article.dto.ArticleDto;
 import com.example.article.entity.ArticleEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,5 +94,19 @@ public class ArticleService {
         return repository
                 .findAllByTitleContains(query, PageRequest.of(page, 20, Sort.by("id").descending()))
                 .map(ArticleDto::fromEntity);
+    }
+
+    public Page<ArticleDto> findAllByExample(String query, Integer page) {
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.STARTING);
+
+        ArticleEntity probe = new ArticleEntity();
+        probe.setTitle(query); //query 생성
+        probe.setContent(query);
+        Example<ArticleEntity> example = Example.of(probe, matcher); //entity 생성
+
+        Pageable pageable = PageRequest.of(page, 20);
+        return repository.findAll(example, pageable).map(ArticleDto::fromEntity);
     }
 }

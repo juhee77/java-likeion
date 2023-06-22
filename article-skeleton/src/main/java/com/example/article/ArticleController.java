@@ -71,6 +71,14 @@ public class ArticleController {
         return service.findAllByTitleContains(query, pageNumber);
     }
 
+    @GetMapping("/search/example")
+    public Page<ArticleDto> searchByExample(
+            @RequestParam("query") String query, //검색어 필수
+            @RequestParam(value = "page", defaultValue = "0") Integer pageNumber) {
+
+        return service.findAllByExample(query, pageNumber);
+    }
+
 
     @GetMapping("/my/{id}")
     public ResponseEntity<ArticleDto> getArticle(@PathVariable("id") Long id) {
