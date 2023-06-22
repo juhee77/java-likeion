@@ -1,71 +1,72 @@
 package com.example.article;
 
+
 import com.example.article.dto.CommentDto;
 import com.example.article.entity.CommentEntity;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.article.dto.CommentDto.fromEntity;
-
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
-@Slf4j
 public class CommentService {
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
 
-    //POST /articles/{articleId}/comments : 게시글에 댓글 추가
-    @Transactional
-    public CommentDto createComment(Long articleId, CommentDto commentDto) {
-        checkArticleValidation(articleId);
+    public CommentDto createComment(Long articleId, CommentDto dto) {
+        // articleId를 ID로 가진 ArticleEntity 가 존재 하는지?
+        if (!articleRepository.existsById(articleId))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);  // 자유롭게 상황대처
 
-        CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setArticleId(articleId);
-        commentEntity.setWriter(commentDto.getWriter());
-        commentEntity.setContent(commentDto.getContent());
-        return fromEntity(commentRepository.save(commentEntity));
+        CommentEntity newComment = new CommentEntity();
+        newComment.setWriter(dto.getWriter());
+        newComment.setContent(dto.getContent());
+        newComment.setArticleId(articleId);
+        newComment = commentRepository.save(newComment);
+        return CommentDto.fromEntity(newComment);
     }
 
-    //- GET /articles/{articleId}/comments : 게시글의 전체 댓글 조회
-
-    public List<CommentDto> readCommentsByArticle(Long articleId) {
-        checkArticleValidation(articleId);
+    //게시글 댓글 전체 조회
+    public List<CommentDto> readCommentByArticle(Long articleId) {
+//        //for-each 이용방식
+//        List<CommentEntity> commentEntities = commentRepository.findAllByArticleId(articleId);
+//        List<CommentDto> commentDtoList = new ArrayList<>();
+//        for (CommentEntity commentEntity : commentEntities) {
+//            commentDtoList.add(CommentDto.fromEntity(commentEntity));
+//        }
+//        return commentDtoList;
+//
+        //stream 이용 방식
         return commentRepository.findAllByArticleId(articleId).stream().map(CommentDto::fromEntity).toList();
     }
-    //- PUT /articles/{articleId}/comments/{commentId} : 댓글 수정
 
-    @Transactional
-    public CommentDto updateComment(Long commentId, CommentDto commentDto) {
-        CommentEntity updatedComment = commentRepository.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        updatedComment.setWriter(commentDto.getWriter());
-        updatedComment.setContent(commentDto.getContent());
-        return fromEntity(updatedComment);
-    }
-    //- DELETE /articles/{articleId}/comments/{commentId} : 댓글 삭제
+    //게시글 댓글 수정
+    //수정 하고자 하는 댓글이 저장한 게시글에 있는지 확인할 목적으로 articleId로 받는다.
+    public CommentDto updateComment(Long articleId, Long commentId, CommentDto dto) {
+        Optional<CommentEntity> optionalComment = commentRepository.findById(commentId);
 
-    @Transactional
-    public void deleteComment(Long commentId) {
-        Optional<CommentEntity> find = commentRepository.findById(commentId);
-        log.info("{}", find);
-        if (!find.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);//찾는 객체가 없는 경우
-        }
-        commentRepository.delete(find.get());
-    }
-
-    private void checkArticleValidation(Long articleId) {
-        if (!articleRepository.existsById(articleId)) {
+        if (!optionalComment.isPresent()) { //존재 하지 않는경우 NOT_FOUND 예외를 던진다.
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+
+        CommentEntity comment = optionalComment.get();
+        //대상 댓글의 게시글이 URL의 path로 들어온 게시글의 id와 일치하는지 확인한다.
+        if (!articleId.equals(comment.getArticleId())) {
+            //다른경우 요청 자체가 잘못된것임을 보내준다.
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        comment.setContent(dto.getContent());
+        comment.setWriter(dto.getWriter());
+        return CommentDto.fromEntity(commentRepository.save(comment));
     }
+
+
+    //게시글 댓글 삭제
 
 }
