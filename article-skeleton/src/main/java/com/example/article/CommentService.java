@@ -68,5 +68,19 @@ public class CommentService {
 
 
     //게시글 댓글 삭제
+    public void deleteComment(Long articleId, Long commentId) {
+        Optional<CommentEntity> optionalComment = commentRepository.findById(commentId);
 
+        if (!optionalComment.isPresent()) { //존재 하지 않는경우 NOT_FOUND 예외를 던진다.
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        CommentEntity comment = optionalComment.get();
+        //대상 댓글의 게시글이 URL의 path로 들어온 게시글의 id와 일치하는지 확인한다.
+        if (!articleId.equals(comment.getArticleId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        commentRepository.deleteById(commentId);
+    }
 }

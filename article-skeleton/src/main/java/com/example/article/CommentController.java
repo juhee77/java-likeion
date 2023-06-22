@@ -43,6 +43,9 @@ public class CommentController {
 
     //게시글 댓글 삭제
     //DELETE /articles/{articleId}/comments/{commentId} : 댓글 삭제
-
+    @DeleteMapping("/{commentId}")
+    public void delete(@PathVariable("articleId") Long articleId, @PathVariable("commentId") Long commentId) {
+        service.deleteComment(articleId, commentId);
+    }
 
 }
