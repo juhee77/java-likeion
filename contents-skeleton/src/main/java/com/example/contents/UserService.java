@@ -2,6 +2,8 @@ package com.example.contents;
 
 import com.example.contents.dto.UserDto;
 import com.example.contents.entity.UserEntity;
+import com.example.contents.exception.UserNotFoundException;
+import com.example.contents.exception.UsernameExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,9 +16,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.concurrent.RejectedExecutionException;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Slf4j
 @Service
@@ -28,8 +27,8 @@ public class UserService {
     // createUser
     @Transactional
     public UserDto createUser(UserDto dto) {
-        if(repository.findByUsername(dto.getUsername()).isPresent())
-            throw new RejectedExecutionException();
+        if (repository.findByUsername(dto.getUsername()).isPresent())
+            throw new UsernameExistException();
 
         UserEntity userEntity = new UserEntity();
         userEntity.setAvatar(dto.getAvatar());
@@ -43,19 +42,20 @@ public class UserService {
 
     // readUserByUsername
     public UserDto readUserByUsername(String username) {
-        return UserDto.fromEntity(repository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return UserDto.fromEntity(repository.findByUsername(username).orElseThrow(UserNotFoundException::new));
     }
 
     //readOne
     public UserDto readUserById(Long id) {
-        return UserDto.fromEntity(repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return UserDto.fromEntity(repository.findById(id).orElseThrow(UserNotFoundException::new));
     }
 
     // updateUser
+    @Transactional
     public UserDto updateUser(Long id, UserDto dto) {
         Optional<UserEntity> optionalUser = repository.findById(id);
         if (optionalUser.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new UserNotFoundException();
 
 
         UserEntity user = optionalUser.get();
@@ -74,7 +74,7 @@ public class UserService {
         // 1. 유저 존재 확인
         Optional<UserEntity> optionalUser = repository.findById(id);
         if (optionalUser.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new UserNotFoundException();
 
         String format = getUserProfilePath(id, avatarImage);
 
@@ -102,6 +102,7 @@ public class UserService {
         // 2-2. 확장자를 포함한 이미지 이름 만들기 (profile.{확장자})
         String originalFilename = avatarImage.getOriginalFilename();
         // queue.png => fileNameSplit = {"queue", "png"}
+        assert originalFilename != null;
         String[] fileNameSplit = originalFilename.split("\\.");
         String extension = fileNameSplit[fileNameSplit.length - 1];
         String profileFilename1 = "profile." + extension;
@@ -119,11 +120,10 @@ public class UserService {
             log.error(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        String profileFilename = profileFilename1;
 
         // 4. UserEntity 업데이트
         // http://localhost:8080/static/1/profile.png
-        String format = String.format("/static/%d/%s", id, profileFilename);
+        String format = String.format("/static/%d/%s", id, profileFilename1);
         log.info(format);
         return format;
     }
