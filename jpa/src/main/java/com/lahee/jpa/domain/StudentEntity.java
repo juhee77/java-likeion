@@ -12,17 +12,19 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="students")
-public class StudentEntity {
+@Table(name = "students")
+public class StudentEntity extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(name = "username", nullable = false, unique = true)
+    //    @Column(name = "username", nullable = false, unique = true)
     private String name;
     private Integer age;
     private String phone;
     private String email;
+
 
     public StudentResponseDto toResponseDto() {
         return new StudentResponseDto(id, name, age, phone, email);

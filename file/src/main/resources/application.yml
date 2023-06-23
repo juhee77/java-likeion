@@ -1,0 +1,10 @@
+spring:
+  mvc:
+    static-path-pattern: /static/** #루트 뒤에 오는 복수의 파일 이름들
+  web:
+    resources:
+      static-locations: file:media/,classpath:/static
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
