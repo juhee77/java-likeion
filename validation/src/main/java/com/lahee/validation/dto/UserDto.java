@@ -1,5 +1,7 @@
 package com.lahee.validation.dto;
 
+import com.lahee.validation.annotations.EmailWhiteList;
+import com.lahee.validation.annotations.Phone010;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -11,10 +13,11 @@ public class UserDto {
     @NotBlank
     @Size(min = 8, message = "최소 8글자 이상이어야 합니다.")
     private String username;
-    @Email
+    @EmailWhiteList //특정도메인만 사용할 수 있도록
     private String email;
-    @NotNull
+    @Phone010
     private String phone;
+
 
     //@Min(14) //null이여도 된다.
     @Min(value = 14, message = "14세 미만은 부모님의 동의가 필요합니다.") @NotNull //반드시 받아야 하고 14 이상이어야 한다.
