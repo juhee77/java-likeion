@@ -1,5 +1,6 @@
 package com.lahee.validation.dto;
 
+import com.lahee.validation.annotations.Blacklist;
 import com.lahee.validation.annotations.EmailWhiteList;
 import com.lahee.validation.annotations.Phone010;
 import jakarta.validation.constraints.*;
@@ -11,9 +12,12 @@ import java.time.LocalDate;
 public class UserDto {
     private Long id;
     @NotBlank
-    @Size(min = 8, message = "최소 8글자 이상이어야 합니다.")
+    @Size(min = 3, message = "최소 3글자 이상이어야 합니다.")
+    @Blacklist(blacklist = {"omg", "cookie"})
     private String username;
-    @EmailWhiteList //특정도메인만 사용할 수 있도록
+
+    @Email
+    @EmailWhiteList //특정도메인만 사용할 수 있도ㄸ
     private String email;
     @Phone010
     private String phone;
