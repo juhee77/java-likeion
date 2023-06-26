@@ -16,6 +16,6 @@ public class Phone010Validator implements ConstraintValidator<Phone010, String> 
 //        return false;
 
 //        return value.startsWith("(010)") || value.startsWith("010-");
-        return value.matches("^010-[0-9]{3,4}-[0-9]{4}$");
+        return value.matches("^(\\(010\\) |010-)\\d{3,4}-\\d{4}$");
     }
 }
