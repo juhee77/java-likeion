@@ -12,15 +12,22 @@ import org.springframework.stereotype.Component;
 @Slf4j //log
 public class TestAspect {
     // 컨트롤러 클래스
-    // @Before  : advice가 실행될 위치
-    // @Before.value : Pointcut Designator, 어느 JoinPoint에서 실행될것인지
+    // @Before: Advice, 실제로 실행될 코드를 나타냄
+    // @Before.value: Pointcut Designator, 어느 JoinPoint에서 실행될 것인지
+
+    // this: 클래스 instance 지정
 //    @Before(" this(com.lahee.aop.controller.AopController)")
+    // within: 클래스 또는 패키지 지정
 //    @Before(" within(com.lahee.aop.controller.AopController)")
-    @Before(" within(com.lahee.aop.controller..*)")
+//    @Before(" within(com.lahee.aop.controller..*)")
+    // @annotation: 어노테이션 지정
 
-    //joinpoint
 
+    @Before(" @annotation(com.lahee.aop.annotation.LogArguments)")
+    // JoinPoint: 이 Advice 가 실행된 JoinPoint (addUser)
     public void logParameters(JoinPoint joinPoint) {
+        log.info("---------[hello aop!] - 여기부터 AOP에 의해 실행되는 구간입니다.");
+
         //signature : joinpoint의 정보를 담은 객체
         Signature signature = joinPoint.getSignature();
 
@@ -35,7 +42,8 @@ public class TestAspect {
         for (Object arg : args) {
             log.info("argument : [{}]", args);
         }
-        log.info("hello aop!");
+        log.info("---------[bye aop!]");
+
     }
 
 }
