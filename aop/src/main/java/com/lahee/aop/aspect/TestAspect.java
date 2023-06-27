@@ -2,7 +2,9 @@ package com.lahee.aop.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -23,10 +25,12 @@ public class TestAspect {
     // @annotation: 어노테이션 지정
 
 
+    //    @After(" @annotation(com.lahee.aop.annotation.LogArguments)")
     @Before(" @annotation(com.lahee.aop.annotation.LogArguments)")
+//    @Around(" @annotation(com.lahee.aop.annotation.LogArguments)")
     // JoinPoint: 이 Advice 가 실행된 JoinPoint (addUser)
     public void logParameters(JoinPoint joinPoint) {
-        log.info("---------[hello aop!] - 여기부터 AOP에 의해 실행되는 구간입니다.");
+        log.info("----[hello LogArguments aop!]");
 
         //signature : joinpoint의 정보를 담은 객체
         Signature signature = joinPoint.getSignature();
@@ -42,8 +46,24 @@ public class TestAspect {
         for (Object arg : args) {
             log.info("argument : [{}]", args);
         }
-        log.info("---------[bye aop!]");
+        log.info("----[bye LogArguments aop!]");
 
+    }
+
+
+    //어떤 메소드가 실행되는데 걸리는 시간을 기록하고 싶다.
+    @Around(" @annotation(com.lahee.aop.annotation.LogExecutionTime)")
+    public Object logTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        log.info("---------[hello LogExecutionTime aop!]");
+        long startTime = System.currentTimeMillis();
+
+        // joinPoint.proceed() : JoinPoint에 해당하는 메서드를 진행하라는 의미
+        Object proceed = joinPoint.proceed();
+
+        long endTime = System.currentTimeMillis();
+        log.info("{} executed in : {}ms", joinPoint.getSignature(), endTime - startTime);
+        log.info("---------[bye LogExecutionTime aop!]");
+        return proceed;
     }
 
 }
