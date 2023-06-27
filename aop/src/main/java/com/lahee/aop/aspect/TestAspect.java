@@ -12,11 +12,14 @@ import org.springframework.stereotype.Component;
 @Slf4j //log
 public class TestAspect {
     // 컨트롤러 클래스
-    // @Before  : advice tlfwpfh tlfgodehlf zhemfmf skxksoa
+    // @Before  : advice가 실행될 위치
     // @Before.value : Pointcut Designator, 어느 JoinPoint에서 실행될것인지
-    @Before(" this(com.lahee.aop.controller.AopController)")
-    //joinpoint :
-    //execution :
+//    @Before(" this(com.lahee.aop.controller.AopController)")
+//    @Before(" within(com.lahee.aop.controller.AopController)")
+    @Before(" within(com.lahee.aop.controller..*)")
+
+    //joinpoint
+
     public void logParameters(JoinPoint joinPoint) {
         //signature : joinpoint의 정보를 담은 객체
         Signature signature = joinPoint.getSignature();
