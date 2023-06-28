@@ -1,4 +1,7 @@
 spring:
+  config:
+    activate:
+      on-profile: dev
   datasource:
     url: jdbc:sqlite:db.sqlite
     driver-class-name: org.sqlite.JDBC
