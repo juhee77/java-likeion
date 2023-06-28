@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class UserDto {
+    private Long id;
     private String username;
     private String email;
     private String phone;
@@ -14,6 +15,7 @@ public class UserDto {
 
     public static UserDto fromEntity(UserEntity entity) {
         UserDto dto = new UserDto();
+        dto.setId(entity.getId());
         dto.setUsername(entity.getUsername());
         dto.setEmail(entity.getEmail());
         dto.setPhone(entity.getPhone());

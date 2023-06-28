@@ -25,6 +25,7 @@ public class UserService {
     private final UserRepository repository;
 
     // createUser
+    // 이렇게 목객체를 작성하면 테스트 코드 작성에서 데이터 베이스에 저장하는 일이 없다. 굿!
     @Transactional
     public UserDto createUser(UserDto dto) {
         if (repository.findByUsername(dto.getUsername()).isPresent())
