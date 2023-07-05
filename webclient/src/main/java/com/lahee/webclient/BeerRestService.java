@@ -3,6 +3,7 @@ package com.lahee.webclient;
 import com.lahee.webclient.dto.BeerGetDto;
 import com.lahee.webclient.dto.BeerPostDto;
 import com.lahee.webclient.dto.MessageDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -13,7 +14,10 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class BeerRestService {
+    private final RestTemplate restTemplate;
+
     public void getBeerObject() {
         //sprint 에서 제공하는 기본 HTTP Client
         RestTemplate restTemplate = new RestTemplate();
@@ -27,7 +31,6 @@ public class BeerRestService {
 
 
     public void getGearEntity() {
-        RestTemplate restTemplate = new RestTemplate();
         String url = "https://random-data-api.com/api/v2/beers";
 
         // RestController
@@ -38,7 +41,6 @@ public class BeerRestService {
     }
 
     public void postBeerEntity() {
-        RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8081/give-me-beer";
 
         // RestController
@@ -48,9 +50,9 @@ public class BeerRestService {
         log.info(response.toString());
     }
 
+    //응답 Body가 없을 경우, Void 클래스를 활용
     public void deleteBeerEntity() {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8081/give-me-beer";
+        String url = "http://localhost:8081/give-me-beer-204";
 
         // RestController
         BeerPostDto dto = new BeerPostDto();
@@ -60,7 +62,6 @@ public class BeerRestService {
     }
 
     public void postBeerObject() {
-        RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8081/give-me-beer";
 
         // RestController
@@ -72,15 +73,15 @@ public class BeerRestService {
     }
 
     //이 메소드는 요청을 보내면서 즉각적으로 Method를 설정
-    public void exchange(){
-        RestTemplate restTemplate = new RestTemplate();
+    public void exchange() {
         String getBeerUrl = "https://random-data-api.com/api/v2/beers";
         ResponseEntity<BeerGetDto> responseBody = restTemplate.exchange(
                 getBeerUrl,
                 HttpMethod.GET,
                 null,
                 // Generic Type을 포함한 클래스를 나타내는 클래스
-                new ParameterizedTypeReference<>() {}
+                new ParameterizedTypeReference<>() {
+                }
         );
 
         BeerPostDto requestBody = new BeerPostDto();
