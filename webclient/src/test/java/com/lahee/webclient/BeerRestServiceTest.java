@@ -35,4 +35,9 @@ class BeerRestServiceTest {
         beerRestService.deleteBeerEntity();
     }
 
+    @Test
+    public void testExchange(){
+        beerRestService.exchange();
+    }
+
 }

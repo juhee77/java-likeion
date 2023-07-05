@@ -4,6 +4,9 @@ import com.lahee.webclient.dto.BeerGetDto;
 import com.lahee.webclient.dto.BeerPostDto;
 import com.lahee.webclient.dto.MessageDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -66,5 +69,32 @@ public class BeerRestService {
         log.info("{}", response.getStatusCode());
         log.info("{}", response.getBody());
         log.info("{}", response.getHeaders());
+    }
+
+    //이 메소드는 요청을 보내면서 즉각적으로 Method를 설정
+    public void exchange(){
+        RestTemplate restTemplate = new RestTemplate();
+        String getBeerUrl = "https://random-data-api.com/api/v2/beers";
+        ResponseEntity<BeerGetDto> responseBody = restTemplate.exchange(
+                getBeerUrl,
+                HttpMethod.GET,
+                null,
+                // Generic Type을 포함한 클래스를 나타내는 클래스
+                new ParameterizedTypeReference<>() {}
+        );
+
+        BeerPostDto requestBody = new BeerPostDto();
+        requestBody.setName(responseBody.getBody().getName());
+        requestBody.setAlcohol(Double.parseDouble(responseBody.getBody().getAlcohol().replace("%", "")));
+        requestBody.setCc(1000L);
+
+        String postBeerUrl = "http://localhost:8081/give-me-beer";
+        HttpEntity<BeerPostDto> request = new HttpEntity<>(requestBody);
+        ResponseEntity<Void> postResponse = restTemplate.exchange(
+                postBeerUrl,
+                HttpMethod.POST,
+                request,
+                Void.class
+        );
     }
 }
