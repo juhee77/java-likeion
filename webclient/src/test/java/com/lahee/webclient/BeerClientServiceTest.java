@@ -15,4 +15,9 @@ class BeerClientServiceTest {
         service.getBeer();
     }
 
+    @Test
+    public void postTest(){
+        service.postBeer();
+    }
+
 }
