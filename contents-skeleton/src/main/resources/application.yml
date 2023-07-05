@@ -1,9 +1,3 @@
 spring:
   profiles:
-    active: dev
-
-
-logging:
-  level:
-    root: info
-  config: file:logback-spring.xml
+    default: dev # active와의 차이점은?
