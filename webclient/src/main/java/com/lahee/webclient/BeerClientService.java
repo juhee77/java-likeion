@@ -3,6 +3,7 @@ package com.lahee.webclient;
 import com.lahee.webclient.dto.BeerGetDto;
 import com.lahee.webclient.dto.BeerPostDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -23,7 +24,7 @@ public class BeerClientService {
                 .retrieve()  // 해당 위에부분은 요청 부분이다. 아래 부분은 응답에 대한 설정이다.
                 .bodyToMono(String.class)  // 단일 객체의 응답을 기대한다.
                 .block();// 동기식 처리
-         log.info(header.toString());
+        log.info(header.toString());
 
 //        //DTO
 //        BeerGetDto dto = webClient.get()  // GET 요청 준비 post()도 사용가능
@@ -52,5 +53,22 @@ public class BeerClientService {
                 .block(); //동기식 처리(메서드 한번 처리할때만다 응답을 정의한다)
 
         log.info(dto.toString());
+    }
+
+    public void voidBodyBeer() { //응답 바디 무시 or 응답 바디가 없는 경우
+        WebClient webClient = WebClient.builder().build();
+        //builder 패턴 처럼 사용한다.
+
+        String url = "http://localhost:8081/give-me-beer-204";
+        BeerPostDto requestDto = new BeerPostDto("hehe", 123L, 4.5);
+
+        //post 요청 시작
+        ResponseEntity<Void> response = webClient.post()
+                .uri(url)    // 요청 URL 설정
+                .bodyValue(requestDto)   //requestBody
+                .retrieve()  // 응답 정의
+                .toBodilessEntity()
+                .block(); //동기식 처리(메서드 한번 처리할때만다 응답을 정의한다)
+        log.info(response.getStatusCode().toString());
     }
 }

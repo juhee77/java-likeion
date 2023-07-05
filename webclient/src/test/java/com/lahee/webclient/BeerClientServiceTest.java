@@ -20,4 +20,9 @@ class BeerClientServiceTest {
         service.postBeer();
     }
 
+    @Test
+    public void voidBodyTest(){
+        service.voidBodyBeer();
+    }
+
 }
