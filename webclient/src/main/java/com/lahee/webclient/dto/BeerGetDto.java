@@ -1,4 +1,4 @@
-package com.lahee.webclient;
+package com.lahee.webclient.dto;
 
 import lombok.Data;
 

@@ -20,4 +20,19 @@ class BeerRestServiceTest {
         beerRestService.getGearEntity();
     }
 
+    @Test
+    public void voidPostEntityTest() {
+        beerRestService.postBeerEntity();
+    }
+
+    @Test
+    public void voidPostObjectTest() {
+        beerRestService.postBeerObject();
+    }
+
+    @Test
+    public void voidPostDeleteTest(){
+        beerRestService.deleteBeerEntity();
+    }
+
 }
