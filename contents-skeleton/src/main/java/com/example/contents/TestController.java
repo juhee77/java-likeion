@@ -48,4 +48,13 @@ public class TestController {
         responseDto.setMessage("hello world!");
         return responseDto;
     }
+
+    @GetMapping("/log")
+    public void logTest() {
+        log.trace("A TRACE Message");
+        log.debug("A DEBUG Message");
+        log.info("A INFO Message");
+        log.warn("A WARN Message");
+        log.error("A ERROR Message");
+    }
 }

@@ -24,3 +24,8 @@ spring:
   web:
     resources:
       static-locations: file:media/,classpath:/static
+
+logging:
+  level:
+    root: debug
+#  config: file:logback-spring.xml
