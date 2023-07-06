@@ -45,9 +45,6 @@ public class WebSecurityConfig {
 
     /**
      * 사용자 관리를 위한 인터페이스 구현체 bean
-     *
-     * @param passwordEncoder
-     * @return
      */
     @Bean
     public UserDetailsManager userDetailsManager(PasswordEncoder passwordEncoder) {
@@ -56,7 +53,11 @@ public class WebSecurityConfig {
         UserDetails user1 = User.withUsername("qwer")
                 .password(passwordEncoder.encode("qwer"))
                 .build();
-        return new InMemoryUserDetailsManager(user1);
+
+        UserDetails user2 = User.withUsername("zxcv")
+                .password(passwordEncoder.encode("zxcv"))
+                .build();
+        return new InMemoryUserDetailsManager(user1, user2);
     }
 
     @Bean

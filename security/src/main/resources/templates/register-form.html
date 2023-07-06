@@ -15,7 +15,7 @@
         <div class="row gx-5 justify-content-center">
           <div class="col-lg-8 col-xl-6">
             <h1 class="text-center mb-5">회원가입</h1>
-            <form action="/users/register" method="post">
+            <form action="/users/register" method="post" th:object="${userRegistrationModel}">
               <div class="form-floating mb-3">
                 <input class="form-control" id="identifier" name="username" type="text" placeholder="Enter your identifier...">
                 <label for="identifier">ID</label>
@@ -25,8 +25,8 @@
                 <label for="password">Password</label>
               </div>
               <div class="form-floating mb-3">
-                <input class="form-control" id="password-check" name="password-check" type="password" placeholder="Re-enter your password...">
-                <label for="password-check">Password Check</label>
+                <input class="form-control" id="passwordCheck" name="passwordCheck" type="password" placeholder="Re-enter your password...">
+                <label for="passwordCheck">Password Check</label>
               </div>
               <div class="d-grid"><button class="btn btn-primary btn-lg" id="sign-in-button" type="submit">Submit</button></div>
               <div style="margin-top: 16px; text-align: right"><a href="/users/login">로그인</a></div>

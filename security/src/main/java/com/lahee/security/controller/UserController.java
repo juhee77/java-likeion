@@ -1,21 +1,19 @@
 package com.lahee.security.controller;
 
-import jakarta.servlet.http.HttpServletResponse;
+import com.lahee.security.dto.UserRegistrationModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.HttpClientErrorException;
-
-import java.io.IOException;
 
 @Slf4j
 @Controller  // 로그인 페이지를 보여줄려고
@@ -37,34 +35,31 @@ public class UserController {
 
     // 로그인 성공 후 로그인 여부를 판단하기 위한 GetMapping
     @GetMapping("/my-profile")
-    public String myProfile() {
+    public String myProfile(Authentication authentication, Model model) {
+        log.info("{} {}", authentication.getName(), authentication);
+        log.info("security context holder : {}", SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("username", authentication.getName());
         return "my-profile";
     }
 
     @GetMapping("/register")
-    public String registerForm() {
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("userRegistrationModel", new UserRegistrationModel());
         return "register-form";
     }
 
-//    @PostMapping("/register")
-//    public String register(Model model) {
-//        String username = (String) model.getAttribute("username");
-//        String password = (String) model.getAttribute("password");
-//        String rePassword = (String) model.getAttribute("password-check");
-//
-//        log.info("{}{}{}",username,password,rePassword);
-//
-//        return "redirect:/users/login";
-//    }
-
     @PostMapping("/register")
-    public String register(@RequestParam("username") String username, @RequestParam("password") String password
-            , @RequestParam("password-check") String passwordCheck) {
-        log.info("{} {} {}", username, password, passwordCheck);
+    public String register(@ModelAttribute("userRegistrationModel") UserRegistrationModel userRegistrationModel) {
+        log.info("{} ", userRegistrationModel);
+        String username = userRegistrationModel.getUsername();
+        String password = userRegistrationModel.getPassword();
+        String passwordCheck = userRegistrationModel.getPasswordCheck();
+
         if (passwordCheck.equals(password)) {
             manager.createUser(User.withUsername(username).password(passwordEncoder.encode(password)).build()); //security context에 저장한댜
             return "redirect:/users/login";
         }
+
         log.warn("password does not match...");
         return "redirect:/users/register?error";
 //        throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
