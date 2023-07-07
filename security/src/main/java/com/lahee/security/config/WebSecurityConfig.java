@@ -46,7 +46,7 @@ public class WebSecurityConfig {
     /**
      * 사용자 관리를 위한 인터페이스 구현체 bean
      */
-    @Bean
+//    @Bean
     public UserDetailsManager userDetailsManager(PasswordEncoder passwordEncoder) {
         //스프링에서 미리 만들어 놓은 사용자 인증 서비스 (위의 시큐리티 처리과정에서 해당 과정을 사용한다.)
         // 임시 User
