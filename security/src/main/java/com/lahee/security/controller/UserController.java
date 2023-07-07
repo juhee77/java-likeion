@@ -1,6 +1,7 @@
 package com.lahee.security.controller;
 
 import com.lahee.security.dto.UserRegistrationModel;
+import com.lahee.security.entity.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -38,6 +39,9 @@ public class UserController {
     public String myProfile(Authentication authentication, Model model) {
         log.info("{} {}", authentication.getName(), authentication);
         log.info("security context holder : {}", SecurityContextHolder.getContext().getAuthentication().getName());
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        log.info(userDetails.getUsername());
+        log.info(userDetails.getPassword());
         model.addAttribute("username", authentication.getName());
         return "my-profile";
     }
@@ -56,7 +60,8 @@ public class UserController {
         String passwordCheck = userRegistrationModel.getPasswordCheck();
 
         if (passwordCheck.equals(password)) {
-            manager.createUser(User.withUsername(username).password(passwordEncoder.encode(password)).build()); //security context에 저장한댜
+//            manager.createUser(User.withUsername(username).password(passwordEncoder.encode(password)).build()); //security context에 저장한댜
+            manager.createUser(CustomUserDetails.builder().username(username).password(passwordEncoder.encode(password)).build()); //security context에 저장한댜
             return "redirect:/users/login";
         }
 
