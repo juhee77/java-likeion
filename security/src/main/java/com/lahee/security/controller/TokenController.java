@@ -6,6 +6,7 @@ import com.lahee.security.jwt.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -42,6 +43,14 @@ public class TokenController {
 
         String token = jwtTokenUtils.generateToken(userDetails);
         return new JwtResponseDto(token);
-
     }
+
+    //POST //token/secured
+    //인증이 필요한 url 예시
+    @PostMapping("/secured")
+    public String checkSecure() {
+        log.info(SecurityContextHolder.getContext().getAuthentication().getName());
+        return "success";
+    }
+
 }

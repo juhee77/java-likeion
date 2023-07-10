@@ -1,5 +1,6 @@
 package com.lahee.security.config;
 
+import com.lahee.security.jwt.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,10 +13,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
 @Configuration
 //@EnableWebSecurity // 2.1 버전이후 스프링 스타터 시큐리티에서는 필수 아님
 public class WebSecurityConfig {
+    private final JwtTokenFilter jwtTokenFilter;
+
+    public WebSecurityConfig(JwtTokenFilter jwtTokenFilter) {
+        this.jwtTokenFilter = jwtTokenFilter;
+    }
 
     @Bean //메서드의 결과를 bean 객체로 등록해주는 어노테이션
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -23,10 +30,25 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         //HTTP 요청 허가 관련 설정
-                        authHttp -> authHttp.requestMatchers("/no-auth", "/users/register", "/token/issue").permitAll() //누구든지 요청하는 허가
-                                .requestMatchers("/re-auth", "/users/my-profile").authenticated() //인증이 된 사용자만 허가
-                                .requestMatchers("/").anonymous()//인증이 되지 않은 사용자만 허가
-//                        .anyRequest().authenticated() //나머지 요청에 대해서 인증된 사용자만
+//                        authHttp -> authHttp.requestMatchers("/no-auth", "/users/register", "/token/issue").permitAll() //누구든지 요청하는 허가
+//                                .requestMatchers("/re-auth", "/users/my-profile").authenticated() //인증이 된 사용자만 허가
+//                                .requestMatchers("/").anonymous()//인증이 되지 않은 사용자만 허가
+////                                .anyRequest().authenticated() //나머지 요청에 대해서 인증된 사용자만
+
+                        authHttp -> authHttp
+                                .requestMatchers(
+                                        "/no-auth",
+                                        "/token/issue",
+                                        "/users/login"
+                                )
+                                .permitAll()
+                                .requestMatchers(
+                                        "/",
+                                        "/users/register"
+                                )
+                                .anonymous()
+                                .anyRequest()
+                                .authenticated()
                 )
 
 //                .formLogin( //쿠키를 통해 세션을 생성한다 (아이디, 비밀번호)
@@ -40,8 +62,14 @@ public class WebSecurityConfig {
 //                                .logoutUrl("/users/logout")
 //                                .logoutSuccessUrl("/users/login") //로그아웃 성공시에
 //                )
-
+                //생성한 필터를 등록한다. (스택 오버 플로우에서 유저 패스워드 말고 다른걸로 해도 된다.)
+                //여기서는 권한 설정 이전에 필터를 넣겠다.
+                .addFilterBefore(
+                        jwtTokenFilter,
+                        AuthorizationFilter.class
+                );
         ;
+
         return http.build();
     }
 
