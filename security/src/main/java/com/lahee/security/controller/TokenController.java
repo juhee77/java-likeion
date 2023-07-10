@@ -1,7 +1,8 @@
-package com.lahee.security.jwt;
+package com.lahee.security.controller;
 
 import com.lahee.security.dto.JwtRequestDto;
 import com.lahee.security.dto.JwtResponseDto;
+import com.lahee.security.jwt.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
