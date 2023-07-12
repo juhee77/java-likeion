@@ -265,5 +265,7 @@ bin/
 ### VS Code ###
 .vscode/
 
+## secret files ##
+!**/src/main/resources/application-secret.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,macos,git,gradle,maven
