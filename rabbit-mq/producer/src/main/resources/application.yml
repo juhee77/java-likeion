@@ -1,9 +1,11 @@
 spring:
+  profiles:
+    include: secret
   rabbitmq:
-    username: username
-    password: password
-    host: dingo.rmq.cloudamqp.com
-    virtual-host: username
+    username: ${rabbit-username}
+    password: ${rabbit-password}
+    host: ${rabbit-host}
+    virtual-host: ${rabbit-virtual-host}
 
   datasource:
     url: jdbc:sqlite:db.sqlite
@@ -16,3 +18,4 @@ spring:
       ddl-auto: create
     database-platform: org.hibernate.community.dialect.SQLiteDialect
     show-sql: true
+
