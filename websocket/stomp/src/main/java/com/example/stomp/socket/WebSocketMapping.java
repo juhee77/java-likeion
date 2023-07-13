@@ -22,9 +22,11 @@ public class WebSocketMapping {
 
     @MessageMapping("/chat")
     //pub 와 sub 패턴
-    public void sendChat(ChatMessage chatMessage, @Headers Map<String, Object> headers) {
-        log.info(chatMessage.toString());
-        log.info(headers.toString()); //헤더도 이렇게 확인이 가능하다.
+    public void sendChat(ChatMessage chatMessage, @Headers Map<String, Object> headers,
+                         @Header("nativeHeaders") Map<String,String> nativeHeaders) {
+        log.info(chatMessage.toString()); //ChatMessage(roomId=1, sender=lion, message=123, time=null)
+        log.info(headers.toString()); //헤더도 이렇게 확인이 가능하다. //{simpMessageType=MESSAGE, stompCommand=SEND, nativeHeaders={Authorization=[Bearer Token_here], destination=[/app/chat], content-length=[44]}, simpSessionAttributes={}, simpHeartbeat=[J@6cbea075, lookupDestination=/chat, simpSessionId=59e45c4d-e57e-d83e-750e-136e698df78a, simpDestination=/app/chat}
+        log.info(nativeHeaders.toString()); // 우리가 넣은것만 확인할 수도 있다. //{Authorization=[Bearer Token_here], destination=[/app/chat], content-length=[44]}
         String time = new SimpleDateFormat("HH:mm").format(new Date());
         chatMessage.setTime(time);
         simpMessagingTemplate.convertAndSend(
