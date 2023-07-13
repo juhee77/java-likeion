@@ -15,6 +15,9 @@ import java.io.IOException;
 @RequestMapping("chat")
 @RequiredArgsConstructor
 public class ChatController {
+    private final SimpleChatHandler simpleChatHandler;
+    private final Gson gson;
+
 
     @GetMapping("rooms")
     public String rooms() {
@@ -24,5 +27,13 @@ public class ChatController {
     @GetMapping("enter")
     public String enter(@RequestParam("username") String username) {
         return "chat";
+    }
+
+    @GetMapping("test")
+    //simple chat handler에서만 보낼 수 있는것은 아니다!
+    //여기서도 가능하다.
+    public @ResponseBody String test() throws IOException {
+        simpleChatHandler.broadcast(gson.toJson(new ChatMessage("ADMIN", "10분뒤 서버가 종료됩니다.")));
+        return "done";
     }
 }
