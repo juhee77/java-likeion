@@ -1,5 +1,6 @@
 package com.lahee.gateway.filter;
 
+import com.lahee.gateway.constant.constant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -10,6 +11,10 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.UUID;
+
+import static com.lahee.gateway.constant.constant.X_GATEWAY_REQUEST_ID;
+import static com.lahee.gateway.constant.constant.X_GATEWAY_REQUEST_TIME;
+
 @Component
 @Slf4j
 public class PreLoggingFilter implements GlobalFilter {
@@ -33,11 +38,11 @@ public class PreLoggingFilter implements GlobalFilter {
                 //헤더를 변형한다.
                 .headers(httpHeaders -> {
                     httpHeaders.add(
-                            "x-gateway-request-id",
+                            X_GATEWAY_REQUEST_ID,
                             requestId
                     );
                     httpHeaders.add(
-                            "x-gatway-request-time",
+                            X_GATEWAY_REQUEST_TIME,
                             String.valueOf(Instant.now().toEpochMilli())
                     );
                 });
