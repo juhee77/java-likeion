@@ -1,5 +1,6 @@
 package com.lagee.relation.school.controller;
 
+import com.lagee.relation.school.dto.InstructorDto;
 import com.lagee.relation.school.dto.LectureDto;
 import com.lagee.relation.school.entity.Instructor;
 import com.lagee.relation.school.entity.Lecture;
@@ -24,12 +25,17 @@ public class InstructorController {
     private final LectureRepository lectureRepository;
     private final InstructorRepository instructorRepository;
 
+    @PostMapping
+    public InstructorDto createInstructor(@RequestBody InstructorDto instructorDto) {
+        return InstructorDto.fromEntity(instructorRepository.save(instructorDto.newEntity()));
+    }
+
     // 강의에 강사를 배정한다
-    @PutMapping("{id}/instructor/{instructorId}")
+    @PutMapping("{instructorId}/lecture/{lectureId}")
     // 응답 바디가 없을 것이다.
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateLectureInstructor(
-            @PathVariable("id") Long id,
+            @PathVariable("lectureId") Long id,
             @PathVariable("instructorId") Long instructorID
     ) {
         Optional<Lecture> optionalLecture = lectureRepository.findById(id);
@@ -58,6 +64,7 @@ public class InstructorController {
 //        }
 //    }
 
+    //교수님의 강의를 모두 출력한다.
     @GetMapping("{id}/lectures")
     public List<LectureDto> readInstructorLectures(@PathVariable("id") Long id) {
         List<LectureDto> lectureList = new ArrayList<>();
