@@ -15,4 +15,6 @@ public class Instructor {
     private String firstName;
     private String lastName;
 
+    @OneToMany(mappedBy = "instructor") //mappedby는 반대쪽 어노테이션이 붙은 필드의 값이다.(테이터 분리 확인을 위해서)
+    private List<Lecture> lectures;
 }

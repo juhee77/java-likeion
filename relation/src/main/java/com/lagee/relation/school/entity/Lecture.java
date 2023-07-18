@@ -16,5 +16,7 @@ public class Lecture {
     private Integer endTime;
 
     @ManyToOne
+//    @JoinColumn(name = "instructor") //조인 컬럼의 이름을 지정해준다.
     private Instructor instructor;
+
 }
