@@ -5,6 +5,7 @@ import com.lagee.relation.school.dto.LectureDto;
 import com.lagee.relation.school.entity.Instructor;
 import com.lagee.relation.school.entity.Lecture;
 import com.lagee.relation.school.repository.InstructorRepository;
+import com.lagee.relation.school.repository.InstructorRepositorySupport;
 import com.lagee.relation.school.repository.LectureRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ import java.util.Optional;
 public class InstructorController {
     private final LectureRepository lectureRepository;
     private final InstructorRepository instructorRepository;
+    private final InstructorRepositorySupport instructorRepositorySupport;
 
     @PostMapping
     public InstructorDto createInstructor(@RequestBody InstructorDto instructorDto) {
@@ -78,5 +80,18 @@ public class InstructorController {
             lectureList.add(LectureDto.fromEntity(lecture));
 
         return lectureList;
+    }
+
+
+    @GetMapping("test")
+    public void test() {
+        List<Instructor> instructors = instructorRepositorySupport.findByFirstName("Christopher");
+        for (Instructor instructor : instructors) {
+            log.info(instructor.getLastName());
+        }
+        instructors = instructorRepositorySupport.findByFirstNameOrLastName("Romero");
+        for (Instructor instructor : instructors) {
+            log.info(instructor.getFirstName());
+        }
     }
 }
