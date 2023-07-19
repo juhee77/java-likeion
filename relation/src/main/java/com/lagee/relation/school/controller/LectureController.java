@@ -29,7 +29,7 @@ public class LectureController {
 
     @GetMapping("{id}/students")
     public List<StudentDto> updateStudentLectures(@PathVariable("id") Long id) {
-        log.info("id :{}",id);
+        log.info("id :{}", id);
         Optional<Lecture> lectures = lectureRepository.findById(id);
         if (lectures.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -41,4 +41,11 @@ public class LectureController {
         return studentDtos;
     }
 
+    @GetMapping("test")
+    public void test() {
+        List<Lecture> tue = lectureRepository.lectureByTime("tue", null, null);
+        for (Lecture lecture : tue) {
+            log.info("{}", lecture.getName());
+        }
+    }
 }
