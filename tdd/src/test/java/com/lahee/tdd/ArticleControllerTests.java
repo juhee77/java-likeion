@@ -1,18 +1,24 @@
 package com.lahee.tdd;
 
 import com.lahee.tdd.controller.ArticleController;
+import com.lahee.tdd.dto.ArticleDto;
+import com.lahee.tdd.service.ArticleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Collections;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -20,12 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ArticleControllerTests {
     @InjectMocks
     private ArticleController articleController;
+    @Mock
+    private ArticleService articleService;
     private MockMvc mockMvc;
 
     @BeforeEach
     public void init() {
-        mockMvc = MockMvcBuilders.standaloneSetup(articleController)
-                .build();
+        mockMvc = MockMvcBuilders.standaloneSetup(articleController).build();
     }
 
     @Test
@@ -39,10 +46,14 @@ public class ArticleControllerTests {
     // 그리고 그 JSON으로 표현된 데이터에는
     // 게시글 데이터가 있으며, 그 제목이 Query Parameter로 전달한
     // 값을 포함한다.
+
     @Test
-    public void queryArticle() throws Exception {
+    public void queryArticle2() throws Exception {
         // given
         String url = "/articles?title=test";
+        ArticleDto articleDto = new ArticleDto();
+        articleDto.setTitle("contains test");
+        when(articleService.findByTitle("test")).thenReturn(Collections.singletonList(articleDto));
 
         // when
         ResultActions resultActions = mockMvc.perform(get(url));
@@ -50,8 +61,11 @@ public class ArticleControllerTests {
         // then
         resultActions.andExpectAll(
                 status().is2xxSuccessful(),
-                content().contentType(MediaType.APPLICATION_JSON),
+                content().contentType(MediaType.APPLICATION_JSON_VALUE),
                 jsonPath("$[0].title", containsString("test"))
         );
     }
+
 }
+
+

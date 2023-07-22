@@ -16,8 +16,7 @@ public class ArticleService {
 
     public List<ArticleDto> findByTitle(String query) {
         List<ArticleDto> articleList = new ArrayList<>();
-        for (Article article:
-                articleRepository.findAllByTitleContains(query)) {
+        for (Article article : articleRepository.findAllByTitleContains(query)) {
             ArticleDto articleDto = new ArticleDto();
             articleDto.setId(article.getId());
             articleDto.setTitle(article.getTitle());

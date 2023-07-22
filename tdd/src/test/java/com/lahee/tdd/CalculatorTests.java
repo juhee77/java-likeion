@@ -43,7 +43,7 @@ public class CalculatorTests {
     }
 
     // 3. 테스트를 통과하는 코드를 작성
-    private class Calculator {
+    private static class Calculator {
         public int add(int a, int b) {
             return a + b;
         }
@@ -57,6 +57,8 @@ public class CalculatorTests {
         }
 
         public int divide(int a, int b) {
+            if (b == 0)
+                throw new IllegalArgumentException("division by zero");
             return a / b;
         }
     }
