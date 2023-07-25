@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>0725</title>
+</head>
+<body>
+<header></header>
+<div id="container">
+    <div class="container-item">
+        <h3>Alex</h3>
+        <p>alex@gmail.com</p>
+    </div>
+    <div class="container-item">
+        <h3>Brad</h3>
+        <p>brad@gmail.com</p>
+    </div>
+</div>
+<script>
+    const windowAlerts = function () {
+        window.alert()
+        window.alert('로그인이 필요합니다.')
+        window.alert('비밀번호가 맞지 않습니다.')
+        window.alert('응모가 완료 되었습니다.')
+    }
+
+    const windowConfirm = function () {
+        const doMove = window.confirm('아이템이 추가되었습니다. 장바구니로 이동하시겠습니까?')
+        if (doMove) window.open('https://google.com')
+    }
+
+    const windowPrompt = function () {
+        const todoDesc = window.prompt('새로운 할일 ');
+        const todoExpire = window.prompt('언제 까지');
+        window.alert(`새로운 할일 : ${todoDesc}, ${todoExpire} 까지`);
+        /*백틱을 사용한다.*/
+    }
+
+    const header = function () {
+        const headerElem = document.querySelector('header')
+        headerElem.innerText = 'JS에서 수정한 내용'
+    }
+
+    //요소 선택 메서드
+    const headerElem = document.querySelector('header')
+    headerElem.innerText = 'JS Generated Header \n 헤더입니다'
+    const newHeading = document.createElement('h1')
+    newHeading.innerText = 'JS Genrated Heading \n h1입니다'
+    headerElem.appendChild(newHeading)
+    headerElem.appendChild(newHeading)
+
+
+    // 새로운 div 요소 생성
+    const newContactContainer = document.createElement('div')
+
+    // 새로운 h3 요소 생성 및 내용 추가
+    const newContactName = document.createElement('h3')
+    newContactName.innerText = 'Chad'
+
+    // 새로운 p 요소 생성 및 내용 추가
+    const newContactEmail = document.createElement('p')
+    newContactEmail.innerText = 'chad@gmail.com'
+
+    // 각 요소를 새 div 요소에 자식으로 추가
+    newContactContainer.appendChild(newContactName)
+    newContactContainer.appendChild(newContactEmail)
+
+    // 새 div 요소를 본래 존재하던 div 요소에 추가
+    document.querySelector('#container').appendChild(newContactContainer)
+
+    //요소 선택 메서드
+    document.getElementById('container');
+    document.querySelector('#container')
+    document.querySelectorAll('.container-item')
+
+</script>
+</body>
+</html>
